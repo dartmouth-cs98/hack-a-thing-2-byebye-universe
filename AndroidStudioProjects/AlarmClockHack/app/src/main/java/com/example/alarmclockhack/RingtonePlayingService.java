@@ -81,7 +81,7 @@ public class RingtonePlayingService extends Service {
 
         }
 
-
+        // if service stops, it won't automatically restart
         return START_NOT_STICKY;
     }
 

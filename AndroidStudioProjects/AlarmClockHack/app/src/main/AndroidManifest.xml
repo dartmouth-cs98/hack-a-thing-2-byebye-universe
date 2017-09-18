@@ -24,9 +24,12 @@
         </activity>
 
         <receiver android:name=".Alarm_Receiver" />
-        <service android:name=".RingtonePlayingService"
-            android:enabled="true"></service>
 
+        <service
+            android:name=".RingtonePlayingService"
+            android:enabled="true" />
+
+        <activity android:name=".PictureActivity"></activity>
     </application>
 
 </manifest>
