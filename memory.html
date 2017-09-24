@@ -6,9 +6,13 @@
   <body>
     <div class = "canvas-container">
       <h3> Choose difficulty level </h3>
-      <button id = "easy"> Easy</button>
-      <button id = "medium"> Medium</button>
-      <button id = "hard"> Hard</button>
+      <button onclick = "this.disabled=true;document.getElementById('medium').disabled=true;
+      document.getElementById('hard').disabled=true;" id = "easy"> Easy</button>
+      <button onclick = "document.getElementById('easy').disabled=true;
+      document.getElementById('hard').disabled=true;" id = "medium"> Medium</button>
+      <button onclick = "document.getElementById('easy').disabled=true;
+      document.getElementById('medium').disabled=true;"id = "hard"> Hard</button>
+      <button onclick = "location.reload();" id = "reset"> Reset</button>
         <canvas id = "memgame" width = "820" height="461"></canvas>
 
 
