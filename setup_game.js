@@ -60,31 +60,37 @@ function setupTask(canvasId){
 
 
   function easy(){
-      ctx.clearRect(0,0,canvas.width, canvas.height);
+    ctx.fillStyle = "white";
+   ctx.fillRect(0,0,canvas.width, canvas.height);
       var rows = 4;
       var cols = 4;
       width = 70;
       console.log("easy checked");
-      playGame(faces_easy, rows, cols,width);
+      playGame(faces_easy, rows, cols,width, canvas, ctx);
   }
 
   function medium(){
-      ctx.clearRect(0,0,canvas.width, canvas.height);
+    ctx.fillStyle = "white";
+    ctx.fillRect(0,0,canvas.width, canvas.height);
+      //ctx.clearRect(0,0,canvas.width, canvas.height);
       var rows = 6;
       var cols = 6;
       width = 60;
       var faces_medium = faces_easy.concat(faces_med);
-      playGame(faces_medium, rows, cols,width);
+      playGame(faces_medium, rows, cols,width, canvas, ctx);
+
     }
 
   function hard(){
-      ctx.clearRect(0,0,canvas.width, canvas.height);
+    ctx.fillStyle = "white";
+    ctx.fillRect(0,0,canvas.width, canvas.height);
+      //ctx.clearRect(0,0,canvas.width, canvas.height);
       var rows = 8;
       var cols = 8;
       width = 50;
       var faces_medium = faces_easy.concat(faces_med);
       var faces_hard = faces_medium.concat(faces_h);
-      playGame(faces_hard, rows, cols,width);
+      playGame(faces_hard, rows, cols,width,canvas, ctx);
     }
 
 
