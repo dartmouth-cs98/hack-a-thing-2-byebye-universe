@@ -10,9 +10,10 @@
     <div class="top-header">
 
       <img src="memory_logo.png" style="width: 800;height: auto">
-      <div id = "color-picker">
-        <h2> First choose single color or two color tiles: </h2>
-        <button onclick = "setupTaskOneColor();this.disabled=true;document.getElementById('two color').disabled=true;
+
+      <div id="color-picker">
+        <!-- <h2> First choose single color or two color tiles: </h2> -->
+        <!-- <button onclick = "setupTaskOneColor();this.disabled=true;document.getElementById('two color').disabled=true;
         document.getElementById('easy').disabled=false;
         document.getElementById('medium').disabled=false;document.getElementById('hard').disabled=false;"
          id = "one color"> One color </button>
@@ -20,32 +21,28 @@
         <button onclick = "setupTaskTwoColor();this.disabled=true;document.getElementById('one color').disabled=true;
         document.getElementById('easy').disabled=false;
         document.getElementById('medium').disabled=false;document.getElementById('hard').disabled=false;"
-         id = "two color"> Two Colors </button>
+         id = "two color"> Two Colors </button> -->
+        <button onclick = "setupTaskOneColor();toggleBtnGroup()" id = "one color"> One color </button>
+        <button onclick = "setupTaskTwoColor();toggleBtnGroup()" id = "two color"> Two Colors </button>
+
       </div>
+
       <div id="difficulty-picker">
-          <!-- <button class="easyBtn wiggle" onclick = "this.disabled=true;document.getElementById('medium').disabled=true;
-          document.getElementById('hard').disabled=true;" id = "easy"> Easy</button>
+          <button class="easyBtn wiggle" onclick="toggleBtnGroup()" id="easy"> Easy</button>
 
-          <button class="mediumBtn wiggle" onclick = "this.disabled=true;document.getElementById('easy').disabled=true;
-          document.getElementById('hard').disabled=true;" id = "medium"> Medium</button>
+          <button class="mediumBtn wiggle" onclick="toggleBtnGroup()" id="medium"> Medium</button>
 
-          <button class="hardBtn wiggle" onclick = "this.disabled=true;document.getElementById('easy').disabled=true;
-          document.getElementById('medium').disabled=true;" id = "hard"> Hard</button> -->
-          <button disabled class="easyBtn wiggle" onclick="toggleBtnGroup()" id="easy"> Easy</button>
-
-          <button disabled class="mediumBtn wiggle" onclick="toggleBtnGroup()" id="medium"> Medium</button>
-
-          <button disabled class="hardBtn wiggle" onclick="toggleBtnGroup()" id="hard"> Hard</button>
+          <button class="hardBtn wiggle" onclick="toggleBtnGroup()" id="hard"> Hard</button>
       </div>
 
       <button onclick = "location.reload();toggleBtnGroup()" id="resetBtn"> Reset</button>
-<!--       <button onclick = "resetGame();" id="resetBtn"> Reset</button>-->
 
     </div>
 
-    <div class = "canvas-container">
+    <!-- <div class = "canvas-container">
       <canvas id = "memgame" width = "470" height="461"></canvas>
-    </div>
+    </div> -->
+    <canvas id = "memgame" width = "470" height="461"></canvas>
 
   <script>
     //setupTask("memgame");

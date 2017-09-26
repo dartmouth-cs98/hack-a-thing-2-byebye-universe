@@ -14,7 +14,8 @@ body > * {
 #difficulty-picker {
 	margin: 30px auto;
 	text-align: center;
-	width: 500
+	width: 500;
+	display: none;
 }
 
 #difficulty-picker > * {
@@ -34,6 +35,7 @@ button {
 }
 
 #color-picker {
+	display: block;
 	margin: 30px auto;
 	text-align: center;
 	width: 500
@@ -65,8 +67,9 @@ button {
 	margin: 0 auto;
 }
 
-.memgame {
+#memgame {
 	margin: 0 auto;
+	display: inherit;
 }
 
 @-webkit-keyframes wiggle {

@@ -1,7 +1,11 @@
 // Make an array which has 2 of each, then randomize it
-function playGameOne(faces,canvasId,rows,cols,width){
+function playGameOne(difficulty, faces,canvasId,rows,cols,width) {
   console.log("in playgame");
   var canvas = document.getElementById(canvasId);
+  resizeCanvas();
+
+  var click_audio = new Audio('click.mp3');
+
   var ctx = canvas.getContext("2d");
   var Tile = function(x, y, face) {
       this.x = x;
@@ -28,115 +32,144 @@ function playGameOne(faces,canvasId,rows,cols,width){
     this.isFaceUp = true;
   }
 
-var selected = [];
-for (var i = 0; i < (rows*cols)/2; i++) {
-    // Randomly pick one from the array of remaining faces
-    var randomInd = Math.floor(Math.random() * (faces.length -1));
-    var face = faces[randomInd];
-    // Push 2 copies onto array
-  //  console.log(face);
-    selected.push(face);
-    selected.push(face);
-    // Remove from array
-    faces.splice(randomInd, 1);
-}
-
-//shuffle the array
-//taken from Stackoverflow, implements Fisher Yates shuffle
-//https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-function shuffle(array) {
-var currentIndex = array.length, temporaryValue, randomIndex;
-// While there remain elements to shuffle...
-while (0 !== currentIndex) {
-  // Pick a remaining element...
-  randomIndex = Math.floor(Math.random() * currentIndex);
-  currentIndex -= 1;
-  // And swap it with the current element.
-  temporaryValue = array[currentIndex];
-  array[currentIndex] = array[randomIndex];
-  array[randomIndex] = temporaryValue;
-}
-return array;
-}
-
-shuffle(selected);
-
-// Create the tiles
-var tiles = [];
-for (var i = 0; i < rows; i++) {
-    for (var j = 0; j < cols; j++) {
-        var face = selected.pop()
-        tiles.push(new Tile(i * (width+8) + 5, j * (width+8) + 5, face));
-    }
-}
-
-// Start by drawing them all face down
-function faceDown() {
-for (var i = 0; i < tiles.length; i++) {
-//  console.log(tiles[i].face);
-  if (!tiles[i].matched){
-      tiles[i].drawFaceDown();
+  var selected = [];
+  for (var i = 0; i < (rows*cols)/2; i++) {
+      // Randomly pick one from the array of remaining faces
+      var randomInd = Math.floor(Math.random() * (faces.length -1));
+      var face = faces[randomInd];
+      // Push 2 copies onto array
+    //  console.log(face);
+      selected.push(face);
+      selected.push(face);
+      // Remove from array
+      faces.splice(randomInd, 1);
   }
-}
-}
-faceDown();
 
-Tile.prototype.isUnderMouse = function(x, y) {
+  //shuffle the array
+  //taken from Stackoverflow, implements Fisher Yates shuffle
+  //https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+  function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+    return array;
+  }
+
+  shuffle(selected);
+
+  // Create the tiles
+  var tiles = [];
+  for (var i = 0; i < rows; i++) {
+      for (var j = 0; j < cols; j++) {
+          var face = selected.pop()
+          tiles.push(new Tile(i * (width+8) + 5, j * (width+8) + 5, face));
+      }
+  }
+
+  // Start by drawing them all face down
+  function faceDown() {
+    for (var i = 0; i < tiles.length; i++) {
+    //  console.log(tiles[i].face);
+      if (!tiles[i].matched){
+        tiles[i].drawFaceDown();
+      }
+    }
+  }
+  faceDown();
+
+  Tile.prototype.isUnderMouse = function(x, y) {
     return x >= this.x && x <= this.x + this.width  &&
-        y >= this.y && y <= this.y + this.width;
-}
+           y >= this.y && y <= this.y + this.width;
+  }
 
 
-var tilesFlipped = [];
-var numFlips = 0;
-function flipTile(event){
-  for (var i = 0; i < tiles.length; i++){
-    var rect = canvas.getBoundingClientRect();
-    var x = event.clientX - rect.left;
-    var y = event.clientY - rect.top;
-    if(tiles[i].isUnderMouse(x, y)){
-      if (!tiles[i].isFaceup && tilesFlipped.length < 2){
-        tiles[i].drawFaceUp();
-        tilesFlipped.push(tiles[i]);
-      }
-      if (tilesFlipped.length ==2){
-        numFlips++;
-        console.log(tilesFlipped[1].face +"," + tilesFlipped[0].face);
-        if (tilesFlipped[1].face == tilesFlipped[0].face){
-          tilesFlipped[1].matched = true;
-          tilesFlipped[0].matched = true;
+  var tilesFlipped = [];
+  var numFlips = 0;
+  function flipTile(event){
+    for (var i = 0; i < tiles.length; i++){
+      var rect = canvas.getBoundingClientRect();
+      var x = event.clientX - rect.left;
+      var y = event.clientY - rect.top;
+      if(tiles[i].isUnderMouse(x, y)){
+        if (!tiles[i].isFaceup && tilesFlipped.length < 2){
+          click_audio.play();
+          tiles[i].drawFaceUp();
+          tilesFlipped.push(tiles[i]);
         }
-        setTimeout(faceDown,300);
-        tilesFlipped = [];
+        if (tilesFlipped.length ==2){
+          numFlips++;
+          console.log(tilesFlipped[1].face +"," + tilesFlipped[0].face);
+          if (tilesFlipped[1].face == tilesFlipped[0].face){
+            click_audio.play();
+            tilesFlipped[1].matched = true;
+            tilesFlipped[0].matched = true;
+          }
+          else {
+            click_audio.play();
+          }
+          setTimeout(faceDown,300);
+          tilesFlipped = [];
+        }
       }
+    }
+    checkGameOver();
+  }
+
+  document.addEventListener("click", flipTile);
+  var won = false;
+
+  function checkGameOver() {
+    var foundAllMatches = true;
+    for (var i = 0; i < tiles.length; i++){
+      foundAllMatches = foundAllMatches && tiles[i].matched;
+    }
+
+    if (foundAllMatches && won ==false){
+      alert("Congratulations! You succeeded in "+ numFlips + " tries!!!");
+      won = true;
     }
   }
 
-  checkGameOver();
-}
+  function resizeCanvas() {
 
-document.addEventListener("click", flipTile);
-var won = false;
-function checkGameOver() {
-  var foundAllMatches = true;
-  for (var i = 0; i < tiles.length; i++){
-    foundAllMatches = foundAllMatches && tiles[i].matched;
+    console.log("in resizeCanvas where difficulty = " + difficulty);
+    if(difficulty === "easy"){
+      console.log("in easy!!!!");
+      canvas.width = "320";
+      canvas.height = "320";
+    }
+    if(difficulty === "medium"){
+      canvas.width = "410";
+      canvas.height = "410";
+    }
+    if(difficulty === "hard"){
+      canvas.width = "470";
+      canvas.height = "470";
+    }
+    else
+      console.log("difficulty didn't equal anything?????");
+
   }
 
-  if (foundAllMatches && won ==false){
-    alert("Congratulations! You succeeded in "+ numFlips + " tries!!!");
-    won = true;
-    // resetGame(canvas, ctx);
-    //location.reload();
-  }
-}
 }
 
 
 // Make an array which has 2 of each, then randomize it
-function playGameTwo(faces1, faces2, canvasId,rows,cols,width){
-  console.log("in playgame");
+function playGameTwo(difficulty, faces1, faces2, canvasId,rows,cols,width){
+  console.log("in playgametwo");
   var canvas = document.getElementById(canvasId);
+  resizeCanvas();
+
+  var click_audio = new Audio('click.mp3');
+
   var ctx = canvas.getContext("2d");
   var Colors = function (color1, color2) {
     this.c1 = color1;
@@ -172,131 +205,148 @@ function playGameTwo(faces1, faces2, canvasId,rows,cols,width){
     this.isFaceUp = true;
   }
 
-var selected = [];
-for (var i = 0; i < (rows*cols)/4; i++) {
-    // Randomly pick one from the array of remaining faces
-    var randomInd = Math.floor(Math.random() * (faces1.length -1));
-    var face1 = faces1[randomInd];
-    var face2 = faces2[randomInd];
-    // Push 2 copies onto array
-  //  console.log(face);
-    var color1 = new Colors(face1, face2);
-    var color2 = new Colors(face2, face1);
-    selected.push(color1);
-    selected.push(color1);
+  var selected = [];
+  for (var i = 0; i < (rows*cols)/4; i++) {
+      // Randomly pick one from the array of remaining faces
+      var randomInd = Math.floor(Math.random() * (faces1.length -1));
+      var face1 = faces1[randomInd];
+      var face2 = faces2[randomInd];
+      // Push 2 copies onto array
+    //  console.log(face);
+      var color1 = new Colors(face1, face2);
+      var color2 = new Colors(face2, face1);
+      selected.push(color1);
+      selected.push(color1);
 
-    selected.push(color2);
-    selected.push(color2);
-    // Remove from array
-    faces1.splice(randomInd, 1);
-    faces2.splice(randomInd, 1);
-}
-
-//shuffle the array
-//taken from Stackoverflow, implements Fisher Yates shuffle
-//https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-function shuffle(array) {
-var currentIndex = array.length, temporaryValue, randomIndex;
-// While there remain elements to shuffle...
-while (0 !== currentIndex) {
-  // Pick a remaining element...
-  randomIndex = Math.floor(Math.random() * currentIndex);
-  currentIndex -= 1;
-  // And swap it with the current element.
-  temporaryValue = array[currentIndex];
-  array[currentIndex] = array[randomIndex];
-  array[randomIndex] = temporaryValue;
-}
-return array;
-}
-
-shuffle(selected);
-
-
-// Create the tiles
-var tiles = [];
-for (var i = 0; i < rows; i++) {
-    for (var j = 0; j < cols; j++) {
-        var color = selected.pop();
-        tiles.push(new Tile(i * (width+8) + 5, j * (width+8) + 5, color));
-    }
-}
-
-// Start by drawing them all face down
-function faceDown() {
-for (var i = 0; i < tiles.length; i++) {
-//  console.log(tiles[i].face);
-  if (!tiles[i].matched){
-      tiles[i].drawFaceDown();
+      selected.push(color2);
+      selected.push(color2);
+      // Remove from array
+      faces1.splice(randomInd, 1);
+      faces2.splice(randomInd, 1);
   }
-}
-}
-faceDown();
 
-Tile.prototype.isUnderMouse = function(x, y) {
-    return x >= this.x && x <= this.x + this.width  &&
-        y >= this.y && y <= this.y + this.width;
-}
+  //shuffle the array
+  //taken from Stackoverflow, implements Fisher Yates shuffle
+  //https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+  function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+  return array;
+  }
+
+  shuffle(selected);
 
 
-var tilesFlipped = [];
-var numFlips = 0;
-function flipTile(event){
-  for (var i = 0; i < tiles.length; i++){
-    var rect = canvas.getBoundingClientRect();
-    var x = event.clientX - rect.left;
-    var y = event.clientY - rect.top;
-    if(tiles[i].isUnderMouse(x, y)){
-      if (!tiles[i].isFaceup && tilesFlipped.length < 2){
-        tiles[i].drawFaceUp();
-        tilesFlipped.push(tiles[i]);
+  // Create the tiles
+  var tiles = [];
+  for (var i = 0; i < rows; i++) {
+      for (var j = 0; j < cols; j++) {
+          var color = selected.pop();
+          tiles.push(new Tile(i * (width+8) + 5, j * (width+8) + 5, color));
       }
-      if (tilesFlipped.length ==2){
-        numFlips++;
-        console.log("outside color: "+ tilesFlipped[1].colors.c1 +"," + tilesFlipped[0].colors.c1);
-        console.log("inside color: "+ tilesFlipped[1].colors.c2 +"," + tilesFlipped[0].colors.c2);
-        if (tilesFlipped[1].colors.c1 == tilesFlipped[0].colors.c1 &&
-        tilesFlipped[1].colors.c2 == tilesFlipped[0].colors.c2){
-          tilesFlipped[1].matched = true;
-          tilesFlipped[0].matched = true;
+  }
+
+  // Start by drawing them all face down
+  function faceDown() {
+  for (var i = 0; i < tiles.length; i++) {
+  //  console.log(tiles[i].face);
+    if (!tiles[i].matched){
+        tiles[i].drawFaceDown();
+    }
+  }
+  }
+  faceDown();
+
+  Tile.prototype.isUnderMouse = function(x, y) {
+      return x >= this.x && x <= this.x + this.width  &&
+          y >= this.y && y <= this.y + this.width;
+  }
+
+
+  var tilesFlipped = [];
+  var numFlips = 0;
+  function flipTile(event){
+    for (var i = 0; i < tiles.length; i++){
+      var rect = canvas.getBoundingClientRect();
+      var x = event.clientX - rect.left;
+      var y = event.clientY - rect.top;
+      if(tiles[i].isUnderMouse(x, y)){
+        if (!tiles[i].isFaceup && tilesFlipped.length < 2){
+          click_audio.play();
+          tiles[i].drawFaceUp();
+          tilesFlipped.push(tiles[i]);
         }
-        setTimeout(faceDown,300);
-        tilesFlipped = [];
+        if (tilesFlipped.length ==2){
+          numFlips++;
+          console.log("outside color: "+ tilesFlipped[1].colors.c1 +"," + tilesFlipped[0].colors.c1);
+          console.log("inside color: "+ tilesFlipped[1].colors.c2 +"," + tilesFlipped[0].colors.c2);
+          if (tilesFlipped[1].colors.c1 == tilesFlipped[0].colors.c1 &&
+          tilesFlipped[1].colors.c2 == tilesFlipped[0].colors.c2){
+            click_audio.play();
+            tilesFlipped[1].matched = true;
+            tilesFlipped[0].matched = true;
+          }
+          else {
+            click_audio.play();
+          }
+          setTimeout(faceDown,300);
+          tilesFlipped = [];
+        }
       }
     }
+
+    checkGameOver();
   }
 
-  checkGameOver();
-}
+  document.addEventListener("click", flipTile);
+  var won = false;
+  function checkGameOver() {
+    var foundAllMatches = true;
+    for (var i = 0; i < tiles.length; i++){
+      foundAllMatches = foundAllMatches && tiles[i].matched;
+    }
 
-document.addEventListener("click", flipTile);
-var won = false;
-function checkGameOver() {
-  var foundAllMatches = true;
-  for (var i = 0; i < tiles.length; i++){
-    foundAllMatches = foundAllMatches && tiles[i].matched;
+    if (foundAllMatches && won ==false){
+      alert("Congratulations! You succeeded in "+ numFlips + " tries!!!");
+      won = true;
+    }
   }
-
-  if (foundAllMatches && won ==false){
-    alert("Congratulations! You succeeded in "+ numFlips + " tries!!!");
-    won = true;
-    // resetGame(canvas, ctx);
-    //location.reload();
-  }
-}
 }
 
 function toggleBtnGroup() {
-      console.log("toggleBtnGroup!!");
 
-      var diff = document.getElementById('difficulty-picker');
-      var reset = document.getElementById('resetBtn');
+  var colorpick = document.getElementById('color-picker');
+  var diff = document.getElementById('difficulty-picker');
+  var reset = document.getElementById('resetBtn');
 
-      if (diff.style.display === 'none') {
-          diff.style.display = 'block';
-          reset.style.display = 'none';
-      } else {
-          reset.style.display = 'block';
-          diff.style.display = 'none';
-      }
+  if (reset.style.display === '' && diff.style.display === '') {
+      console.log("colorpick is active");
+      colorpick.style.display = 'none';
+      diff.style.display = 'block';
+      reset.style.display = 'none';
+      // return;
+  }
+  else if (colorpick.style.display === '' && reset.style.display === '') {
+    console.log("diff is active");
+    colorpick.style.display = 'none';
+    diff.style.display = 'none';
+    reset.style.display = 'block';
+    // return;
+  }
+  else {
+    console.log("reset " + colorpick.style.display);
+    colorpick.style.display = 'none';
+    diff.style.display = 'none';
+    reset.style.display = 'block';
+    // return;
+  }
 }
