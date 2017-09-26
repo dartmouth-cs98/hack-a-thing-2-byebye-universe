@@ -33,6 +33,16 @@ button {
     border-radius: 15px;
 }
 
+#color-picker {
+	margin: 30px auto;
+	text-align: center;
+	width: 500
+}
+
+#color-picker > * {
+    margin: 0 20;
+}
+
 .easyBtn {
 	background-color: #70c170;
 }
@@ -70,7 +80,7 @@ button {
 		-webkit-transform:rotate(4deg);
 	}
 }
- 
+
 .wiggle:hover {
 	-webkit-animation: wiggle 0.5s infinite;
 }
