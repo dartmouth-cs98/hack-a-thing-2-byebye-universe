@@ -185,7 +185,6 @@ function playGameTwo(difficulty, faces1, faces2, canvasId,rows,cols,width){
   };
 
 
-
   Tile.prototype.drawFaceDown = function(){
     ctx.beginPath();
     ctx.fillStyle="darkslategray";
@@ -319,6 +318,25 @@ function playGameTwo(difficulty, faces1, faces2, canvasId,rows,cols,width){
       alert("Congratulations! You succeeded in "+ numFlips + " tries!!!");
       won = true;
     }
+  }
+
+  function resizeCanvas() {
+    console.log("in resizeCanvas where difficulty = " + difficulty);
+    if(difficulty === "easy"){
+      console.log("in easy!!!!");
+      canvas.width = "320";
+      canvas.height = "320";
+    }
+    if(difficulty === "medium"){
+      canvas.width = "410";
+      canvas.height = "410";
+    }
+    if(difficulty === "hard"){
+      canvas.width = "470";
+      canvas.height = "470";
+    }
+    else
+      console.log("difficulty didn't equal anything?????");
   }
 }
 
