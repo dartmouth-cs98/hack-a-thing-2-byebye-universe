@@ -3,15 +3,15 @@ function setupTask(canvasId){
   var ctx = canvas.getContext("2d");
 
   var renderWidth, renderHeight;
-  function computeCanvasSize() {
-      renderWidth = Math.min(canvas.parentNode.clientWidth - 20, 820);
-      renderHeight = Math.floor(renderWidth*9.0/16.0);
-      canvas.width = renderWidth;
-      canvas.height = renderHeight;
-  }
+  // function computeCanvasSize() {
+  //     renderWidth = Math.min(canvas.parentNode.clientWidth - 20, 820);
+  //     renderHeight = Math.floor(renderWidth*9.0/16.0);
+  //     canvas.width = renderWidth;
+  //     canvas.height = renderHeight;
+  // }
 
-  window.addEventListener('resize', computeCanvasSize);
-  computeCanvasSize();
+  // window.addEventListener('resize', computeCanvasSize);
+  // computeCanvasSize();
   document.getElementById("easy").addEventListener("click", easy);
   document.getElementById("medium").addEventListener("click", medium);
   document.getElementById("hard").addEventListener("click", hard);
@@ -60,39 +60,37 @@ function setupTask(canvasId){
 
 
   function easy(){
+
     ctx.fillStyle = "white";
-   ctx.fillRect(0,0,canvas.width, canvas.height);
-      var rows = 4;
-      var cols = 4;
-      width = 70;
-      console.log("easy checked");
-      playGame(faces_easy, rows, cols,width, canvas, ctx);
+    ctx.fillRect(0,0,canvas.width, canvas.height);
+    var rows = 4;
+    var cols = 4;
+    width = 70;
+    console.log("easy checked");
+    playGame(faces_easy, rows, cols,width, canvas, ctx);
   }
 
   function medium(){
+
     ctx.fillStyle = "white";
     ctx.fillRect(0,0,canvas.width, canvas.height);
-      //ctx.clearRect(0,0,canvas.width, canvas.height);
-      var rows = 6;
-      var cols = 6;
-      width = 60;
-      var faces_medium = faces_easy.concat(faces_med);
-      playGame(faces_medium, rows, cols,width, canvas, ctx);
-
-    }
+    var rows = 6;
+    var cols = 6;
+    width = 60;
+    var faces_medium = faces_easy.concat(faces_med);
+    playGame(faces_medium, rows, cols,width, canvas, ctx);
+  }
 
   function hard(){
+
     ctx.fillStyle = "white";
     ctx.fillRect(0,0,canvas.width, canvas.height);
-      //ctx.clearRect(0,0,canvas.width, canvas.height);
-      var rows = 8;
-      var cols = 8;
-      width = 50;
-      var faces_medium = faces_easy.concat(faces_med);
-      var faces_hard = faces_medium.concat(faces_h);
-      playGame(faces_hard, rows, cols,width,canvas, ctx);
-    }
-
-
+    var rows = 8;
+    var cols = 8;
+    width = 50;
+    var faces_medium = faces_easy.concat(faces_med);
+    var faces_hard = faces_medium.concat(faces_h);
+    playGame(faces_hard, rows, cols,width,canvas, ctx);
+  }
 
 }

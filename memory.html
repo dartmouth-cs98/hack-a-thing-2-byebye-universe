@@ -2,27 +2,42 @@
   <head>
     <script src="setup_game.js"></script>
     <script src="playgame.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+
   </head>
   <body>
-    <div class = "canvas-container">
-      <h3> Choose difficulty level </h3>
-      <button onclick = "this.disabled=true;document.getElementById('medium').disabled=true;
-      document.getElementById('hard').disabled=true;" id = "easy"> Easy</button>
-      <button onclick = "this.disabled=true;document.getElementById('easy').disabled=true;
-      document.getElementById('hard').disabled=true;" id = "medium"> Medium</button>
-      <button onclick = "this.disabled=true;document.getElementById('easy').disabled=true;
-      document.getElementById('medium').disabled=true;"id = "hard"> Hard</button>
-      <button onclick = "location.reload();" id = "reset"> Reset</button>
-        <canvas id = "memgame" width = "820" height="461"></canvas>
+    <div class="top-header">
 
+      <img src="memory_logo.png" style="width: 800;height: auto">
 
+      <div id="difficulty-picker">
+          <!-- <button class="easyBtn wiggle" onclick = "this.disabled=true;document.getElementById('medium').disabled=true;
+          document.getElementById('hard').disabled=true;" id = "easy"> Easy</button>
+          
+          <button class="mediumBtn wiggle" onclick = "this.disabled=true;document.getElementById('easy').disabled=true;
+          document.getElementById('hard').disabled=true;" id = "medium"> Medium</button>
+          
+          <button class="hardBtn wiggle" onclick = "this.disabled=true;document.getElementById('easy').disabled=true;
+          document.getElementById('medium').disabled=true;" id = "hard"> Hard</button> -->
+          <button class="easyBtn wiggle" onclick="toggleBtnGroup()" id="easy"> Easy</button>
+          
+          <button class="mediumBtn wiggle" onclick="toggleBtnGroup()" id="medium"> Medium</button>
+          
+          <button class="hardBtn wiggle" onclick="toggleBtnGroup()" id="hard"> Hard</button>
+      </div>
+      
+      <button onclick = "location.reload();toggleBtnGroup()" id="resetBtn"> Reset</button>
+<!--       <button onclick = "resetGame();" id="resetBtn"> Reset</button>-->
 
     </div>
 
+    <div class = "canvas-container">
+      <canvas id = "memgame" width = "470" height="461"></canvas>
+    </div>
 
   <script>
     setupTask("memgame");
-
   </script>
   </body>
 </html>
