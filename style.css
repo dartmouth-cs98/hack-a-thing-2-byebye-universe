@@ -1,8 +1,20 @@
+html {
+  background: url(background1.png) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 body > * {
 	/*width: 500px;*/
 	margin: 0 auto;
 }
 
+h1 {
+	font-size: 50px;
+	style: "black";
+}
 .top-header {
 	width: 800;
 }
@@ -14,8 +26,7 @@ body > * {
 #difficulty-picker {
 	margin: 30px auto;
 	text-align: center;
-	width: 500;
-	display: none;
+	width: 500
 }
 
 #difficulty-picker > * {
@@ -31,34 +42,104 @@ button {
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    border-radius: 15px;
+    border-radius: 50px;
 }
 
-#color-picker {
-	display: block;
-	margin: 30px auto;
-	text-align: center;
-	width: 500
+
+.profile-pic {
+	height: auto;
+	display: flex;
+	justify-content: center; /* align horizontal */
+  align-items: center;
 }
 
-#color-picker > * {
-    margin: 0 20;
+.img {
+	display: flex;
+	justify-content: center; /* align horizontal */
+  align-items: center;
+	width: 400px;
+	height: auto;
+}
+
+.overlay {
+	position: absolute;
+  height: 51%;
+  width: 400px;
+  background: rgba(29, 106, 154, 0.72);
+  color: #fff;
+  visibility: hidden;
+  opacity: 0;
+
+  /* transition effect. not necessary */
+  transition: opacity .2s, visibility .2s;
+}
+
+.profile-pic:hover .overlay {
+  visibility: visible;
+  opacity: 1;
+}
+
+.about__me {
+	font-family: 'Pacifico', cursive;
+  color: white;
+  font-size: 18px;
+	position: absolute;
+  display: flex;
+	text-align: center; /* align horizontal */
+	top: 25%;
+}
+
+#hobbies-shown{
+		font-family: 'Pacifico', cursive;
+    width: 100%;
+    padding: 50px 0;
+    text-align: center;
+    margin-top: 20px;
+		display:none;
+
+}
+
+#goals-shown{
+		font-family: 'Pacifico', cursive;
+    width: 100%;
+    padding: 50px 0;
+    text-align: center;
+    margin-top: 20px;
+		display:none;
+
+}
+
+#quirks-shown{
+		font-family: 'Pacifico', cursive;
+    width: 100%;
+    padding: 50px 0;
+    text-align: center;
+    margin-top: 20px;
+		display:none;
+
 }
 
 .easyBtn {
-	background-color: #70c170;
+	background-color: RosyBrown;
+	border: grey;
+	border-style: solid;
 }
 
 .mediumBtn {
-	background-color: #f7bc37;
+	background-color: LightCoral;
+	border: grey;
+	border-style: solid;
 }
 
 .hardBtn {
-	background-color: #ff6060;
+	background-color: DarkSalmon;
+	border: grey;
+	border-style: solid;
 }
 
 #resetBtn {
 	margin: 30px auto;
+	background-color: Thistle;
 	display: none;
 }
 
@@ -67,9 +148,8 @@ button {
 	margin: 0 auto;
 }
 
-#memgame {
+.memgame {
 	margin: 0 auto;
-	display: inherit;
 }
 
 @-webkit-keyframes wiggle {
